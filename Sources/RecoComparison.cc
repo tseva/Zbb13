@@ -180,7 +180,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			if (a.EndsWith("_b")){
 				for (auto &b:vhNames){	
 					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_c")){
-						//cout << "Replacing " <<  b << " with " << a << endl;
 						b=a;
 						break;
 					}
@@ -193,7 +192,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			if (a.EndsWith("_c")){
 				for (auto &b:vhNames){	
 					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_l")){
-						//cout << "Replacing " <<  b << " with " << a << endl;
 						b=a;
 						break;
 					}
@@ -206,7 +204,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			if (a.EndsWith("_l")){
 				for (auto &b:vhNames){	
 					if (a(0,a.Length()-2)==b){
-						//cout << "Replacing " <<  b << " with " << a << endl;
 						b=a;
 						break;
 					}
@@ -246,7 +243,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 	        hist[i][j]->SetFillStyle(1001);
 	        hist[i][j]->SetFillColor(Colors[i]);
                 hist[i][j]->SetLineColor(Colors[i]);
-		//if (j>145 && j<163) cout << vhNames[j] << "        "  << hist[i][j]->GetEntries() << " " << j << endl;
                 hSumMC[j]->Add(hist[i][j]);
                 //if (!doPASPlots || i == 1 || i == 3 || i == 5 || i == 11) legend[j]->AddEntry(hist[i][j], legendNames[i], "f");
             }
