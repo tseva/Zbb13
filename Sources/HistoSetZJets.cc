@@ -621,9 +621,7 @@ HistoSetZJets::HistoSetZJets(TString leptonFlavor)
 
 	genFirstJetPt_Zexc1jet            = newTH1D("genFirstJetPt_Zexc1jet",              "gen 1st jet p_{T} (N_{jets} = 1)",            "p_{T}(j_{1}) [GeV]",     nJetPt_Zinc1jet, jetPt_Zinc1jet);
 	genSecondJetPt_Zexc2jet           = newTH1D("genSecondJetPt_Zexc2jet",             "gen 2nd jet p_{T} (N_{jets} = 2)",            "p_{T}(j_{2}) [GeV]",     nJetPt_Zinc2jet, jetPt_Zinc2jet);
-	
-
-/// b-jets 
+	/// b-jets 
 	ZNGoodBJets_Zexc = newTH1D("ZNGoodBJets_Zexc","B Jet Multiplicity (excl.)", "N_{jets}", 5, -0.5, 4.5);
 	ZNGoodBJets_Zinc = newTH1D("ZNGoodBJets_Zinc","B Jet Multiplicity (incl.)", "N_{jets}", 5, -0.5, 4.5);
 	ZptBJets_Zexc1Bjet = newTH1D("ZptBJets_Zexc1B","Zpt (exc 1 b-jet)", "Zpt",  100, 0, 100.  );
@@ -673,12 +671,35 @@ HistoSetZJets::HistoSetZJets(TString leptonFlavor)
 	SecondBJetPt_Zinc2Bjet_b = newTH1D("SecondBJetPt_Zinc2B_b","b-jet pt (inc 2 b jet)","b-jet pt", 100, 0, 100.);
 	CSV = newTH1D("CSV","CSV","CSV", 20, 0, 1.);
 
-	METE_Zinc1Bjet = newTH1D("MET_Zinc1Bjet","MET E distribution in inc1 B-jet","MET", 100, 0.,1000.);
-	METPt_Zinc1Bjet = newTH1D("METPt_Zinc1Bjet","MET Pt distribution in inc1 B-jet", "MET Pt",100, 0.,1000. );
-	METE_Zinc2Bjet = newTH1D("MET_Zinc2Bjet","MET E distribution in inc2 B-jet","MET", 100, 0.,1000.);
-	METPt_Zinc2Bjet = newTH1D("METPt_Zinc2Bjet","MET Pt distribution in inc2 B-jet", "MET Pt",100, 0.,1000. );
-	METE_Zinc3Bjet = newTH1D("MET_Zinc3Bjet","MET E distribution in inc3 B-jet","MET", 100, 0.,1000.);
-	METPt_Zinc3Bjet = newTH1D("METPt_Zinc3Bjet","MET Pt distribution in inc3 B-jet", "MET Pt",100, 0.,1000. );
+	METE_Zinc1Bjet = newTH1D("MET_Zinc1Bjet","MET E distribution in inc1 B-jet","MET", 23, 0.,230.);
+        METPt_Zinc1Bjet = newTH1D("METPt_Zinc1Bjet","MET Pt distribution in inc1 B-jet", "MET Pt",20, 0.,200. );
+        METE_Zinc2Bjet = newTH1D("MET_Zinc2Bjet","MET E distribution in inc2 B-jet","MET", 15, 0.,200.);
+        METPt_Zinc2Bjet = newTH1D("METPt_Zinc2Bjet","MET Pt distribution in inc2 B-jet", "MET Pt",10, 0.,200. );
+        METE_Zinc3Bjet = newTH1D("MET_Zinc3Bjet","MET E distribution in inc3 B-jet","MET", 100, 0.,200.);
+        METPt_Zinc3Bjet = newTH1D("METPt_Zinc3Bjet","MET Pt distribution in inc3 B-jet", "MET Pt",20, 0.,300. );
+	
+
+        // gen of b-jets
+        genZNGoodBJets_Zexc = newTH1D("genZNGoodBJets_Zexc","genB Jet Multiplicity (excl.)", "N_{jets}", 5, -0.5, 4.5);
+        genZNGoodBJets_Zinc = newTH1D("genZNGoodBJets_Zinc","genB Jet Multiplicity (incl.)", "N_{jets}", 5, -0.5, 4.5);
+	genZptBJets_Zexc1Bjet = newTH1D("genZptBJets_Zexc1B","genZpt (exc 1 b-jet)", "genZpt",  100, 0, 130.  );
+        genZptBJets_Zexc2Bjet = newTH1D("genZptBJets_Zexc2B","genZpt (exc 2 b-jet)", "genZpt",  50, 0, 130.);
+        genZptBJets_Zinc1Bjet = newTH1D("genZptBJets_Zinc1B","genZpt (inc 1 b-jet)", "genZpt",  50, 0, 130.);
+     	genZptBJets_Zinc2Bjet = newTH1D("genZptBJets_Zinc2B","genZpt (inc 2 b-jet)", "genZpt",  13, 0, 130.);
+        genZptBJets_Zinc3Bjet = newTH1D("genZptBJets_Zinc3B","genZpt (inc 3 b-jet)", "genZpt",  10, 0, 100.);
+        genBJetsMass_Zinc2Bjet= newTH1D("genBJetsMass_Zinc2", "gen b-jet mass inc 2 b-jet ","GEN b jet mass",  50, 30, 200.);
+       	genFirstBJetPt_Zinc1Bjet = newTH1D("genFirstBJetPt_Zinc1B","gen b-jet pt (inc 1 b jet)","GEN leading b-jet pt", 19, 30, 200.);
+       	genFirstBJetPt_Zinc2Bjet = newTH1D("genFirstBJetPt_Zinc2B","gen b-jet pt (inc 2 b jet)","GEN leading b-jet pt", 19, 30, 200.);
+        genSecondBJetPt_Zinc2Bjet = newTH1D("genSecondBJetPt_Zinc3B","gen b-jet pt (inc 2 b jet)","GEN subleading b-jet pt", 7, 30, 100.);
+
+	//METE_Zinc0Bjet = newTH1D("MET_Zinc0Bjet","MET E distribution in inc0 B-jet", "MET",100, 0.,1000. );
+	//METPt_Zinc0Bjet = newTH1D("METPt_Zinc0Bjet","MET Pt distribution in inc0 B-jet", "MET Pt",100, 0.,1000. );
+	genMETE_Zinc1Bjet = newTH1D("genMET_Zinc1Bjet","genMET E distribution in inc1 B-jet","genMET", 23, 0.,230.);
+	genMETPt_Zinc1Bjet = newTH1D("genMETPt_Zinc1Bjet","genMET Pt distribution in inc1 B-jet", "genMET Pt",20, 0.,200. );
+	genMETE_Zinc2Bjet = newTH1D("genMET_Zinc2Bjet","genMET E distribution in inc2 B-jet","genMET", 15, 0.,200.);
+	genMETPt_Zinc2Bjet = newTH1D("genMETPt_Zinc2Bjet","genMET Pt distribution in inc2 B-jet", "genMET Pt",10, 0.,200. );
+	genMETE_Zinc3Bjet = newTH1D("genMET_Zinc3Bjet","genMET E distribution in inc3 B-jet","genMET", 100, 0.,200.);
+	genMETPt_Zinc3Bjet = newTH1D("genMETPt_Zinc3Bjet","genMET Pt distribution in inc3 B-jet", "genMET Pt",20, 0.,300. );
 
 	// end b-jets
 

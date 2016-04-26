@@ -244,7 +244,7 @@ class HistoSetZJets {
 
         TH1D *ZNGoodJets_Zexc_NoWeight;
         TH1D *ZNGoodJets_Zinc_NoWeight;
-	
+
 
 	/// b-jets histograms
 	TH1D *ZNGoodBJets_Zexc;
@@ -260,7 +260,7 @@ class HistoSetZJets {
 	TH1D *SecondBJetPt_Zinc2Bjet;
 	TH1D *ThirdBJetPt_Zinc3Bjet;
 	TH1D *CSV;
-
+	
 	TH1D *ZNGoodBJets_Zexc_l;
         TH1D *ZNGoodBJets_Zinc_l;
         TH1D *ZptBJets_Zexc1Bjet_l;
@@ -299,8 +299,21 @@ class HistoSetZJets {
 	TH1D *FirstBJetPt_Zinc2Bjet_b;
 	TH1D *SecondBJetPt_Zinc2Bjet_b;
 	TH1D *ThirdBJetPt_Zinc3Bjet_b;
-
 // end b histos
+
+// start b-jet GEN histos
+	TH1D *genZNGoodBJets_Zexc;
+	TH1D *genZNGoodBJets_Zinc;
+	TH1D *genZptBJets_Zexc1Bjet;
+	TH1D *genZptBJets_Zexc2Bjet;
+	TH1D *genZptBJets_Zinc1Bjet;
+        TH1D *genZptBJets_Zinc2Bjet;
+        TH1D *genZptBJets_Zinc3Bjet;
+        TH1D *genBJetsMass_Zinc2Bjet;	
+	TH1D *genFirstBJetPt_Zinc1Bjet;
+	TH1D *genFirstBJetPt_Zinc2Bjet;
+	TH1D *genSecondBJetPt_Zinc2Bjet;
+// end b-jet GEN histos
 
         TH1D *TwoJetsPtDiff_Zexc2jet;
         TH1D *genTwoJetsPtDiff_Zexc2jet;

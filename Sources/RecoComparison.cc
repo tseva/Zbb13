@@ -100,16 +100,17 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
     unsigned short nTotHist = fSamples[0]->GetListOfKeys()->GetEntries();
     for (unsigned short i = 0; i < nTotHist; ++i) {
         TString hName = fSamples[0]->GetListOfKeys()->At(i)->GetName();
-	cout << hName << endl;
         TH1D *hTemp = (TH1D*) fSamples[0]->Get(hName);
         TString hTitle = hTemp->GetName();
         //--- skip histogram if it is gen or has no entry or is not a TH1 ---
-        if (hName.Index("gen") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        if (hName.Index("Ratio") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        //if (hName.Index("gen") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        //if (hName.Index("Ratio") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        if (hName.Index("gen") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        if (hName.Index("Ratio") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
 	//cout << " test " << nTotHist << "   " << i << "  " << hTitle << endl; 
 	//if (hName.EndsWith("_l"))  cout << "ovo je l " << hName << endl;	
 	//if (hName.EndsWith("_c"))  cout << "ovo je c " << hName << endl;	
-	if (hName.Index("_b")>=0)  cout << "ovo je b " << hName << endl;	
+	//if (hName.Index("_b")>=0)  cout << "ovo je b " << hName << endl;	
         //--- store the histograme name  and title ---
         vhNames.push_back(hName);
         vhTitles.push_back(hTitle);
@@ -166,9 +167,57 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
     intLumi->SetNDC();
     intLumi->SetTextAlign(31);
 
+
+
+
+
+
     for (unsigned int i = 0; i < NFILESDYJETS; ++i) {
+
+	cout << "File " << i << endl;
+	if (i==NFILESDYJETS-1){
+		for (auto &a: vhNames){
+			if (a.EndsWith("_b")){
+				for (auto &b:vhNames){	
+					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_c")){
+						//cout << "Replacing " <<  b << " with " << a << endl;
+						b=a;
+						break;
+					}
+				}
+			}		
+		}
+	}
+	if (i==NFILESDYJETS-2){
+		for (auto &a: vhNames){
+			if (a.EndsWith("_c")){
+				for (auto &b:vhNames){	
+					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_l")){
+						//cout << "Replacing " <<  b << " with " << a << endl;
+						b=a;
+						break;
+					}
+				}
+			}		
+		}
+	}
+	if (i==NFILESDYJETS-3){
+		for (auto &a: vhNames){
+			if (a.EndsWith("_l")){
+				for (auto &b:vhNames){	
+					if (a(0,a.Length()-2)==b){
+						//cout << "Replacing " <<  b << " with " << a << endl;
+						b=a;
+						break;
+					}
+				}
+			}		
+		}
+	}
+
         for (int j = 0; j < nHist; ++j) {
             hist[i][j] = getHisto(fSamples[i], vhNames[j]);
+
 	    if(!hist[i][j]) {
 	      std::cerr << "Histogram " << vhNames[j] 
 			<< " was not found for sample " << Samples[FilesDYJets[i]].name << "\n";
@@ -182,11 +231,11 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
                 hSumMC[j] = new THStack(vhNames[j], vhTitles[j]);
 
                 if (!doPASPlots) { 
-                    legend[j] = new TLegend(0.72, 0.5, 0.76, 0.86);
+                    legend[j] = new TLegend(0.72, 0.45, 0.76, 0.86);
                     legend[j]->SetTextSize(0.032);
                 }
                 else {
-                    legend[j] = new TLegend(0.63, 0.60, 0.81, 0.87);
+                    legend[j] = new TLegend(0.63, 0.55, 0.81, 0.87);
                     legend[j]->SetTextSize(0.042);
                 }
 		legend[j]->SetFillStyle(0);
@@ -197,6 +246,7 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 	        hist[i][j]->SetFillStyle(1001);
 	        hist[i][j]->SetFillColor(Colors[i]);
                 hist[i][j]->SetLineColor(Colors[i]);
+		//if (j>145 && j<163) cout << vhNames[j] << "        "  << hist[i][j]->GetEntries() << " " << j << endl;
                 hSumMC[j]->Add(hist[i][j]);
                 //if (!doPASPlots || i == 1 || i == 3 || i == 5 || i == 11) legend[j]->AddEntry(hist[i][j], legendNames[i], "f");
             }
