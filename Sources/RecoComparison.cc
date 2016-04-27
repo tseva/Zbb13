@@ -103,14 +103,11 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
         TH1D *hTemp = (TH1D*) fSamples[0]->Get(hName);
         TString hTitle = hTemp->GetName();
         //--- skip histogram if it is gen or has no entry or is not a TH1 ---
-        //if (hName.Index("gen") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        //if (hName.Index("Ratio") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        if (hName.Index("gen") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        if (hName.Index("Ratio") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        if (hName.Index("gen") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        if (hName.Index("Ratio") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        //if (hName.Index("gen") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
+        //if (hName.Index("Ratio") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
 	//cout << " test " << nTotHist << "   " << i << "  " << hTitle << endl; 
-	//if (hName.EndsWith("_l"))  cout << "ovo je l " << hName << endl;	
-	//if (hName.EndsWith("_c"))  cout << "ovo je c " << hName << endl;	
-	//if (hName.Index("_b")>=0)  cout << "ovo je b " << hName << endl;	
         //--- store the histograme name  and title ---
         vhNames.push_back(hName);
         vhTitles.push_back(hTitle);
@@ -175,7 +172,7 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
     for (unsigned int i = 0; i < NFILESDYJETS; ++i) {
 
 	cout << "File " << i << endl;
-	if (i==NFILESDYJETS-1){
+/*	if (i==NFILESDYJETS-1){
 		for (auto &a: vhNames){
 			if (a.EndsWith("_b")){
 				for (auto &b:vhNames){	
@@ -215,7 +212,7 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 		}
 	}
 
-        for (int j = 0; j < nHist; ++j) {
+  */      for (int j = 0; j < nHist; ++j) {
             hist[i][j] = getHisto(fSamples[i], vhNames[j]);
 
 	    if(!hist[i][j]) {
@@ -228,6 +225,7 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
                 hist[0][j]->SetMarkerStyle(20);
                 hist[0][j]->SetMarkerColor(Colors[0]);
                 hist[0][j]->SetLineColor(Colors[0]);
+		if (j==151) cout << vhNames[j] << "        "  << hist[i][j]->Integral(0,1000) << " " << i << endl;
                 hSumMC[j] = new THStack(vhNames[j], vhTitles[j]);
 
                 if (!doPASPlots) { 
@@ -246,7 +244,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 	        hist[i][j]->SetFillStyle(1001);
 	        hist[i][j]->SetFillColor(Colors[i]);
                 hist[i][j]->SetLineColor(Colors[i]);
-		//if (j>145 && j<163) cout << vhNames[j] << "        "  << hist[i][j]->GetEntries() << " " << j << endl;
                 hSumMC[j]->Add(hist[i][j]);
                 //if (!doPASPlots || i == 1 || i == 3 || i == 5 || i == 11) legend[j]->AddEntry(hist[i][j], legendNames[i], "f");
             }
@@ -284,7 +281,8 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
         pad1->cd();
 
         TH1D *hRatio = (TH1D*) hSumMC[i]->GetStack()->Last()->Clone();
-        // Need to draw MC Stack first other wise
+	
+	// Need to draw MC Stack first other wise
         // cannot access Xaxis !!!
         hSumMC[i]->Draw("HIST"); 
         if (vhNames[i].Index("ZMass_Z") >= 0){
@@ -298,6 +296,7 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
         //    hRatio->GetXaxis()->SetRangeUser(-2.4,2.4);
 
         //}
+
 
         hSumMC[i]->SetTitle(""); 
         hSumMC[i]->GetYaxis()->SetLabelSize(0.04); 

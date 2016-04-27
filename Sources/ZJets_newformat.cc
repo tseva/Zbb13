@@ -278,6 +278,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 	}
 
 	if(nEvents == 0 && !EvtIsRealData){
+	    xsec_=1.;
 	    norm_ = yieldScale * lumi_ * xsec_ * xsecFactor_ * skimAccep_[0];
 	    if(norm_ == 0){
 		std::cerr << "Error: normaliation factor for sample " << fileName
