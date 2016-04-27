@@ -177,7 +177,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			if (a.EndsWith("_b")){
 				for (auto &b:vhNames){	
 					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_c")){
-						//cout << "Replacing " <<  b << " with " << a << endl;
 						b=a;
 						break;
 					}
@@ -190,7 +189,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			if (a.EndsWith("_c")){
 				for (auto &b:vhNames){	
 					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_l")){
-						//cout << "Replacing " <<  b << " with " << a << endl;
 						b=a;
 						break;
 					}
@@ -203,7 +201,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			if (a.EndsWith("_l")){
 				for (auto &b:vhNames){	
 					if (a(0,a.Length()-2)==b){
-						//cout << "Replacing " <<  b << " with " << a << endl;
 						b=a;
 						break;
 					}
