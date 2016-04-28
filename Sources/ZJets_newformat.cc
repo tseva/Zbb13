@@ -30,6 +30,7 @@ using namespace std;
 void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		 TString pdfSet, int pdfMember, double muR, double muF, double yieldScale)
 {
+    cout << " We plan to start " << endl;
     //--- Random generator necessary for BTagging ---
     TRandom3* RandGen = new TRandom3();
     //TRandom* RandGen = new TRandom();
@@ -229,9 +230,9 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
     if(!GLepBarePrompt){
 	std::cout << "Warning: tau gen veto was not found in the ntuple. It is fine if the samples is not DY or if it does not contains Z->\\tau\\tau.\n" ;
     }
-    ///cout << " AAAAA " << endl ; 
-    //cout << " AAAAA " << nEvents << "   " << entry_start << "   " << entry_stop <<  endl ; 
-   // cout << " before going to events " <<"  max events" << nMaxEvents << endl ; 
+//    cout << " AAAAA " << endl ; 
+//    cout << " AAAAA " << nEvents << "   " << entry_start << "   " << entry_stop <<  endl ; 
+//    cout << " before going to events " <<"  max events" << nMaxEvents << endl ; 
     if ( nMaxEvents > 0 ) entry_stop = entry_start + nMaxEvents ;
     //======================================================================
     // Event loop starts here
@@ -278,6 +279,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 	}
 
 	if(nEvents == 0 && !EvtIsRealData){
+	    xsec_=1.;
 	    norm_ = yieldScale * lumi_ * xsec_ * xsecFactor_ * skimAccep_[0];
 	    if(norm_ == 0){
 		std::cerr << "Error: normaliation factor for sample " << fileName
@@ -1843,7 +1845,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
             } // end inclusive 1 jets
 
             if (nGoodJets_20 >= 2) SecondJetPt_Zinc2jet->Fill(jets_20[1].v.Pt(), weight);
-    		if (DEBUG) cout << " aaaaa2 " << nGoodJets << endl;
+    		if (DEBUG) cout << " aaaaa2 " <<__LINE__<<"   " << nGoodJets << endl;
 
 
 /// MINIMUM 2 JETS CASE
@@ -2362,7 +2364,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 	if (jets.size()>0) CSV->Fill(jets[0].BDiscCisvV2,weight);
 	
 
-	if (nGoodBJets==1){
+	if (nGoodBJets>=1){
 		METE_Zinc1Bjet->Fill(MET.E(),weight);
 		METPt_Zinc1Bjet->Fill(MET.Pt(),weight);
 		ZptBJets_Zinc1Bjet->Fill(EWKBoson.Pt(),weight);
@@ -2402,7 +2404,8 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 
 	}
 
-	if (nGoodBJets==2){
+
+	if (nGoodBJets>=2){
 		METE_Zinc2Bjet->Fill(MET.E(),weight);
 		METPt_Zinc2Bjet->Fill(MET.Pt(),weight);
 		ZptBJets_Zinc2Bjet->Fill(EWKBoson.Pt(),weight);
@@ -2439,7 +2442,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		
 	}
 
-	if (nGoodBJets==3){
+	if (nGoodBJets>=3){
 		METE_Zinc3Bjet->Fill(MET.E(),weight);
 		METPt_Zinc3Bjet->Fill(MET.Pt(),weight);
 		ZptBJets_Zinc3Bjet->Fill(EWKBoson.Pt(),weight);
@@ -2449,7 +2452,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		}
 
 
-       }
+        }
 
 
         //=======================================================================================================//
@@ -3389,6 +3392,7 @@ void ZJets::getMcNorm(){
     }
 
     if(EvtWeightSums_.size() == 0 || InEvtWeightSums_.size() == 0 || InEvtWeightSums_[0] == 0 ){
+	cout << "  InEvtCount_ " << InEvtCount_ << endl;
 	if(InEvtCount_){
 	    skimAccep_ = std::vector<double>(1, EvtCount_/InEvtCount_);
 	} else{
