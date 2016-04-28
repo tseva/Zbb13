@@ -35,9 +35,10 @@ const processInfoStruct Samples[] = {
     /* 9*/{"WWTo2L2Nu", '+',     1.,       1.,      1,  0.06,     kViolet+5, kViolet+5, " WW", " WW"},
     /*10*/{"WZ",    	'+',     1.,       1.,      1,  0.06,     kRed+1,    kRed+1,    " WZ", " WZ"},
     /*11*/{"VV",    	'=',     1.,       1.,      1,  0.06,     kRed+1,    kRed+1,    " VV", "VV"},              
-    /*12*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-3,  kGreen-3,  " DYJets", " Z+l"}, 
-    /*13*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-6,  kGreen-6,  " DYJets", " Z+(c)c"}, 
-    /*14*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-8,  kGreen-8,  " DYJets", " Z+(b)b"}, 
+    /*12*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-8,  kGreen-8,  " DYJets", " Z+jets"}, 
+    ///*12*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-3,  kGreen-3,  " DYJets", " Z+l"}, 
+    ///*13*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-6,  kGreen-6,  " DYJets", " Z+(c)c"}, 
+    ///*14*/{"DYJets_UNFOLDING", ' ', 1.,    1.,      1,  0.06,     kGreen-8,  kGreen-8,  " DYJets", " Z+(b)b"}, 
 };
 
 const int NSamples = sizeof(Samples) / sizeof(Samples[0]);
@@ -46,7 +47,7 @@ const int DYJETS(NSamples - 1); // Signal MC is the seconf from the last sample 
 
 /** Total number of samples after sample grouping, including real data, background MC, and signal MC
  */
-const unsigned int NFILESDYJETS = 8;
+const unsigned int NFILESDYJETS = 6;
 
 /** Number of background MC samples: all minus data and the signal MC
  */
@@ -55,7 +56,7 @@ const unsigned int NBGDYJETS = NFILESDYJETS - 2;
 /** List of indices of samples from Samples to be used for ZJets analysis
  * When samples are grouped, only the merged sample is included in this list.
  */
-const unsigned int FilesDYJets[NFILESDYJETS] = {0, 1, 6, 7, 11, 12, 13, 14};
+const unsigned int FilesDYJets[NFILESDYJETS] = {0, 1, 6, 7, 11, 12 };
 //const unsigned int FilesDYJets[NFILESDYJETS] = {0, 1, 2};
 
 
