@@ -31,6 +31,35 @@ using namespace std;
  * @param jetPtMin lower bound for jet pt histograms
  * @param jetEtaMax upper bound in jet |eta| for jet eta histograms
  */
+
+
+template < int x, int y >
+//void addZbb(TH1D *(&hist)[x][y])
+void addZbb(TH1D *(&hist)[x][y], std::vector<TString> vhNames,std::vector<TString> vhNames_b, int current,TFile** fSamples)
+{
+
+	TString name;
+	TString end[3] = {"_l","_c","_b"};
+
+	for (unsigned int i = current; i< current+3; i++){
+		for ( unsigned int j=0; j<vhNames.size(); j++){
+			//cout << vhNames[j] << endl;
+			for(int k=3; k<vhNames_b.size(); k++){
+				if (vhNames[j]==vhNames_b[k](0,vhNames_b[k].Length()-2) && vhNames_b[k].EndsWith(end[i-current])){
+					name = vhNames_b[k];
+					break;
+				}
+				else name = vhNames[j];
+			}
+			hist[i][j] = getHisto(fSamples[current], name);
+		}
+		
+	}
+}
+
+
+
+
 void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString recoCompDir, int jetPtMin, int jetEtaMax)
 {
     TH1::SetDefaultSumw2();
@@ -40,8 +69,8 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
     ConfigVJets cfg;
     TString energy = TString::Format("%gTeV", cfg.getD("energy"));
 
-    int Colors[NFILESDYJETS];
-    TString legendNames[NFILESDYJETS];
+    int Colors[NFILESDYJETS+2];
+    TString legendNames[NFILESDYJETS+2];
     
     //-- get the files, legend names and colors -----------------------------------------------------------
     TFile *fSamples[NFILESDYJETS];
@@ -72,6 +101,15 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
         //--- set the legend color for the current file ---
         Colors[i] = doPASPlots ? Samples[iSample].colorPAS : Samples[iSample].colorAN;    
     }
+
+	Colors[NFILESDYJETS-1] = kGreen-3;
+	Colors[NFILESDYJETS] = kGreen-6;
+	Colors[NFILESDYJETS+1] = kGreen-9;
+
+	legendNames[NFILESDYJETS-1] = "Z+l";
+	legendNames[NFILESDYJETS] = "Z+(c)c";
+	legendNames[NFILESDYJETS+1] = "Z+(b)b";
+
     //-----------------------------------------------------------------------------------------------------
 
     TString outputFileName = recoCompDir;
@@ -93,6 +131,8 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
     //--- vector to contain the names and titles of the reco histograms ---
     vector<TString> vhNames;
     vector<TString> vhTitles;
+    vector<TString> vhNames_b;
+    vector<TString> vhTitles_b;
     //---------------------------------------------------------------------
 
     //--- total number of histograms inside the data file 
@@ -103,23 +143,31 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
         TH1D *hTemp = (TH1D*) fSamples[0]->Get(hName);
         TString hTitle = hTemp->GetName();
         //--- skip histogram if it is gen or has no entry or is not a TH1 ---
-        if (hName.Index("gen") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        if (hName.Index("Ratio") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        //if (hName.Index("gen") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-        //if (hName.Index("Ratio") >= 0 || !hTemp->InheritsFrom(TH1D::Class())) continue;
-	//cout << " test " << nTotHist << "   " << i << "  " << hTitle << endl; 
+        if (hName.Index("gen") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class()) || hName.EndsWith("_b") || hName.EndsWith("_c") || hName.EndsWith("_l")) continue;
+        if (hName.Index("Ratio") >= 0 || hTemp->GetEntries() < 1 || !hTemp->InheritsFrom(TH1D::Class()) ) continue;
         //--- store the histograme name  and title ---
         vhNames.push_back(hName);
+	cout << hName << endl;
         vhTitles.push_back(hTitle);
     } 
+    for (unsigned short i = 0; i < nTotHist; ++i) {
+        TString hName = fSamples[0]->GetListOfKeys()->At(i)->GetName();
+        TH1D *hTemp = (TH1D*) fSamples[0]->Get(hName);
+        TString hTitle = hTemp->GetName();
+        //--- skip histogram if it is gen or has no entry or is not a TH1 ---
+        if (hName.EndsWith("_b") || hName.EndsWith("_c") || hName.EndsWith("_l")){
+        //--- store the histograme name  and title ---
+	cout << "B  names: " << hName << endl;
+        vhNames_b.push_back(hName);
+        vhTitles_b.push_back(hTitle);}
+    } 
 
+    TH1D *hist[10][500]={ { } };
 
     //--- vhNames size gives us the number of reco histograms
     //    interesting for comparison at reco level
-    int nHist = vhNames.size();
+    const int nHist = vhNames.size();
 
-
-    TH1D *hist[NFILESDYJETS][nHist];
     THStack *hSumMC[nHist];
     TLegend *legend[nHist];
 
@@ -165,51 +213,10 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
     intLumi->SetTextAlign(31);
 
 
+// getting histos
 
-
-
-
-    for (unsigned int i = 0; i < NFILESDYJETS; ++i) {
-
-	cout << "File " << i << endl;
-/*	if (i==NFILESDYJETS-1){
-		for (auto &a: vhNames){
-			if (a.EndsWith("_b")){
-				for (auto &b:vhNames){	
-					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_c")){
-						b=a;
-						break;
-					}
-				}
-			}		
-		}
-	}
-	if (i==NFILESDYJETS-2){
-		for (auto &a: vhNames){
-			if (a.EndsWith("_c")){
-				for (auto &b:vhNames){	
-					if (a(0,a.Length()-2)==b(0,a.Length()-2) && b.EndsWith("_l")){
-						b=a;
-						break;
-					}
-				}
-			}		
-		}
-	}
-	if (i==NFILESDYJETS-3){
-		for (auto &a: vhNames){
-			if (a.EndsWith("_l")){
-				for (auto &b:vhNames){	
-					if (a(0,a.Length()-2)==b){
-						b=a;
-						break;
-					}
-				}
-			}		
-		}
-	}
-
-  */      for (int j = 0; j < nHist; ++j) {
+    for (unsigned int i = 0; i < NFILESDYJETS-1; ++i) {
+	for (int j = 0; j < nHist; ++j) {
             hist[i][j] = getHisto(fSamples[i], vhNames[j]);
 
 	    if(!hist[i][j]) {
@@ -217,12 +224,18 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
 			<< " was not found for sample " << Samples[FilesDYJets[i]].name << "\n";
 	      continue;
 	    }
+    	}
+    }    
+    addZbb(hist,vhNames,vhNames_b, NFILESDYJETS-1, fSamples);
+
+//styling histos
+    for (unsigned int i = 0; i < NFILESDYJETS+2; ++i) {
+	for (int j = 0; j < nHist; ++j) {
             hist[i][j]->SetTitle(vhTitles[j]);
             if (i == 0) {
                 hist[0][j]->SetMarkerStyle(20);
                 hist[0][j]->SetMarkerColor(Colors[0]);
                 hist[0][j]->SetLineColor(Colors[0]);
-		if (j==151) cout << vhNames[j] << "        "  << hist[i][j]->Integral(0,1000) << " " << i << endl;
                 hSumMC[j] = new THStack(vhNames[j], vhTitles[j]);
 
                 if (!doPASPlots) { 
@@ -247,11 +260,12 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
         } //next histo j
     } //next file i
 
+
     //Fill the legend in reverse order of drawing in order
     //that the legend lines order matches with stacked histogram one.
     for (int j = 0; j < nHist; ++j) {
       if(NFILESDYJETS > 0) legend[j]->AddEntry(hist[0][j], legendNames[0], "ep");
-      for (int i = NFILESDYJETS - 1; i > 0; --i) {
+      for (int i = NFILESDYJETS + 1; i > 0; --i) {
 	legend[j]->AddEntry(hist[i][j], legendNames[i], "f");
       }
     }
@@ -287,12 +301,6 @@ void RecoComparison(bool doPASPlots, TString lepSel, TString histoDir, TString r
             hSumMC[i]->GetXaxis()->SetRangeUser(71,110.9);
             hRatio->GetXaxis()->SetRangeUser(71,110.9);
         }
-        //if (vhNames[i].Index("JetEta") >= 0){
-        //    hist[0][i]->GetXaxis()->SetRangeUser(-2.4,2.4);
-        //    hSumMC[i]->GetXaxis()->SetRangeUser(-2.4,2.4);
-        //    hRatio->GetXaxis()->SetRangeUser(-2.4,2.4);
-
-        //}
 
 
         hSumMC[i]->SetTitle(""); 
