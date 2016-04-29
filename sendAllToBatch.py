@@ -13,8 +13,9 @@ class sample:
 
 doSubmit = True
 subprocess.call("make", shell=True)
-samples = {"DYJETS","DATA","BACKGROUND"}
-nJobs = 20
+samples = {"DYJETS","BACKGROUND"}
+#samples = {"DYJETS","DATA","BACKGROUND"}
+nJobs = 1
 f = open("template.sh","r").read()
 
 
@@ -27,12 +28,12 @@ for s in samples:
 		f_new.write(bla.getCommand()+"\n")
 		f_new.close()
 
-		command = "bsub -q 8nm -o out < new_script.sh"
+		command = "bsub -q 1nh -o out < new_script.sh"
 		print command
 		if doSubmit:
 			subprocess.call(command, shell=True)
 		bla.updateJobN()
 
-	nJobs-=5
+	#nJobs-=5
 
 

@@ -70,7 +70,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
     //    int ZMCutLow(71), ZMCutHigh(111);
     double ZMCutLow = cfg.getD("ZMassMin", 71.);
     double ZMCutHigh = cfg.getD("ZMassMax", 111.);
-    double b_tag_cut(0.89);
+    double b_tag_cut(0.800);
     int evFlav(0);
     int MTCutLow(50), METCutLow(0);
     // additional variables
@@ -549,7 +549,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
         int countTauS3 = 0;
 
 
-	hasGenInfo=0;
+	//hasGenInfo=0;
 
 
         if (hasGenInfo) {
@@ -817,15 +817,8 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		} //End of loop over all the jets
 
 		//Get Event Flavour - FIXME!!! in 76X
-		for (int b=0; b<nTotJets; b++){
-			if (abs(JetAk04PartFlav->at(b)) == 5){
-				evFlav=5;
-				break;
-				}
-			else if (abs(JetAk04PartFlav->at(b)) == 4){
-				evFlav=4;
-				}
-			}
+	
+
  
 		nGoodJets = jets.size();
 		if (DEBUG){
@@ -910,7 +903,18 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 			}
 		}
 		nGoodGenJets = genJets.size();
+		//for (auto gJet:GJetAk04MatchedPartonID)
+		for (int b=0; b<nTotGenJets; b++){
+			if (abs(GJetAk04MatchedPartonID->at(0)) == 5){
+				evFlav=5;
+				break;
+				}
+			else if (abs(GJetAk04MatchedPartonID->at(b)) == 4){
+				evFlav=4;
+				}
+			}
 	}
+	hasGenInfo=0;
 	//=======================================================================================================//
 
 
@@ -3579,6 +3583,8 @@ void ZJets::Init(bool hasRecoInfo, bool hasGenInfo){
     GJetAk04Eta = 0;
     GJetAk04Phi = 0;
     GJetAk04E = 0;
+    GJetAk04MatchedPartonID = 0;
+
 
     ElPt = 0;
     ElEta = 0;
@@ -3699,6 +3705,7 @@ void ZJets::Init(bool hasRecoInfo, bool hasGenInfo){
         fChain->SetBranchAddress("GJetAk04Eta", &GJetAk04Eta, &b_GJetAk04Eta);
         fChain->SetBranchAddress("GJetAk04Phi", &GJetAk04Phi, &b_GJetAk04Phi);
         fChain->SetBranchAddress("GJetAk04E", &GJetAk04E, &b_GJetAk04E);
+        fChain->SetBranchAddress("GJetAk04MatchedPartonID", &GJetAk04MatchedPartonID, &b_GJetAk04MatchedPartonID);
         fChain->SetBranchAddress("GLepClosePhotPt", &GLepClosePhotPt, &b_GLepClosePhotPt);
         fChain->SetBranchAddress("GLepClosePhotEta", &GLepClosePhotEta, &b_GLepClosePhotEta);
         fChain->SetBranchAddress("GLepClosePhotPhi", &GLepClosePhotPhi, &b_GLepClosePhotPhi);

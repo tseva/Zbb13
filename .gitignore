@@ -1,3 +1,4 @@
+##################
 #Compiled source #
 ###################
 *.com
@@ -7,10 +8,18 @@
 *.o
 *.so
 *.d
+*.pcm
 
+#############
+#Executables#
+#############
 runZJets_newformat
 runUnfoldingZJets
 runRecoComparison
+
+################
+#Output folders#
+################
 Statistics
 HistoFiles*
 RecoComparison

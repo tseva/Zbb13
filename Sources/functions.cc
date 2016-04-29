@@ -326,32 +326,30 @@ void BTagModification(double randNumber, double pt, double eta, int jetFlavour, 
     SF_out = 0. ;
      
     if (abs(jetFlavour) == 5) {
-	//float SFb = -(5.1345)+(0.000820101*(log(pt+11518.1)*(log(pt+11518.1)*(3-(-(8.66128*log(pt+11518.1))))))); //T
-        float SFb = -(0.0443172)+(0.00496634*(log(pt+1267.85)*(log(pt+1267.85)*(3-(-(0.110428*log(pt+1267.85))))))); //M
-        if (pt < 30.) SFb = -(0.0443172)+(0.00496634*(log(30+1267.85)*(log(30+1267.85)*(3-(-(0.110428*log(30+1267.85)))))));
-        if (pt > 670.) SFb = -(0.0443172)+(0.00496634*(log(670+1267.85)*(log(670+1267.85)*(3-(-(0.110428*log(670+1267.85)))))));
-	//if ( DEBUG ) cout << " LLL " << effb_out << " x = "<< x<<" pt "<< pt << "  SFb "<< SF_out<<  endl;
-	/// WHERE TF DID THIS NUMBERS COME FROM   
+
+//MWP
+        float SFb = 0.934588*((1.+(0.00678184*pt))/(1.+(0.00627144*pt))); 
+        if (pt < 30.) SFb = 0.934588*((1.+(0.00678184*30))/(1.+(0.00627144*30))); 
+        if (pt > 670.) SFb = 0.934588*((1.+(0.00678184*670))/(1.+(0.00627144*670)));
+//TWP
+/*        float SFb =0.886376*((1.+(0.00250226*pt))/(1.+(0.00193725*pt))); 
+        if (pt < 30.) SFb =0.886376*((1.+(0.00250226*30))/(1.+(0.00193725*30)));
+        if (pt > 670.) SFb =0.886376*((1.+(0.00250226*670))/(1.+(0.00193725*670)));
+*/
+
         float SFb_error = 0;
 
 	if (systDir == 0) SF_out = SFb;
 	else {
-		if      (pt >= 20  && pt < 30)  SFb_error = 0.0415707;
-		else if (pt >= 30  && pt < 40)  SFb_error = 0.0204209;
-		else if (pt >= 40  && pt < 50)  SFb_error = 0.0223227;
-		else if (pt >= 50  && pt < 60)  SFb_error = 0.0206655;
-		else if (pt >= 60  && pt < 70)  SFb_error = 0.0199325;
-		else if (pt >= 70  && pt < 80)  SFb_error = 0.0174121;
-		else if (pt >= 80  && pt < 100) SFb_error = 0.0202332;
-		else if (pt >= 100 && pt < 120) SFb_error = 0.0182446;
-		else if (pt >= 120 && pt < 160) SFb_error = 0.0159777;
-		else if (pt >= 160 && pt < 210) SFb_error = 0.0218531;
-		else if (pt >= 210 && pt < 260) SFb_error = 0.0204688;
-		else if (pt >= 260 && pt < 320) SFb_error = 0.0265191;
-		else if (pt >= 320 && pt < 400) SFb_error = 0.0313175;
-		else if (pt >= 400 && pt < 500) SFb_error = 0.0415417;
-		else if (pt >= 500 && pt < 600) SFb_error = 0.0740446;
-		else if (pt >= 600) SFb_error = 0.0596716;
+		if      (pt >= 30  && pt < 50)  SFb_error = 0.018076473847031593; 
+		else if (pt >= 50  && pt < 70)  SFb_error =0.024799736216664314; 
+		else if (pt >= 70  && pt < 100)  SFb_error = 0.024073265492916107;
+		else if (pt >= 100  && pt < 140)  SFb_error = 0.020040607079863548;
+		else if (pt >= 140  && pt < 200)  SFb_error = 0.016540588811039925;
+		else if (pt >= 200  && pt < 300)  SFb_error = 0.025977084413170815;
+		else if (pt >= 300  && pt < 670) SFb_error = 0.027120551094412804;
+		else if (pt >= 670) SFb_error = 2*0.027120551094412804;
+
 
 		float SFb_up = SFb + SFb_error;
 		float SFb_down = SFb - SFb_error;
@@ -363,30 +361,21 @@ void BTagModification(double randNumber, double pt, double eta, int jetFlavour, 
     // ---------------- For Real C-jets--------------- //
     else if (abs(jetFlavour) == 4) {
 // WTF !!!! FIX FIX FIX
-        //float SFc = (0.938887+(0.00017124*pt))+(-2.76366e-07*(pt*pt));
-	//float SFc = -(5.1345)+(0.000820101*(log(pt+11518.1)*(log(pt+11518.1)*(3-(-(8.66128*log(pt+11518.1))))))); //T
-	float SFc = -(0.0443172)+(0.00496634*(log(pt+1267.85)*(log(pt+1267.85)*(3-(-(0.110428*log(pt+1267.85)))))));//M
+	float SFc = 0.934588*((1.+(0.00678184*pt))/(1.+(0.00627144*pt))); 
         float SFc_error = 0.;
 
 	if (systDir == 0) SF_out = SFc ;
 
 	else{
-		if      (pt >= 20  && pt < 30)  SFc_error = 0.0415707;
-		else if (pt >= 30  && pt < 40)  SFc_error = 0.0204209;
-		else if (pt >= 40  && pt < 50)  SFc_error = 0.0223227;
-		else if (pt >= 50  && pt < 60)  SFc_error = 0.0206655;
-		else if (pt >= 60  && pt < 70)  SFc_error = 0.0199325;
-		else if (pt >= 70  && pt < 80)  SFc_error = 0.0174121;
-		else if (pt >= 80  && pt < 100) SFc_error = 0.0202332;
-		else if (pt >= 100 && pt < 120) SFc_error = 0.0182446;
-		else if (pt >= 120 && pt < 160) SFc_error = 0.0159777;
-		else if (pt >= 160 && pt < 210) SFc_error = 0.0218531;
-		else if (pt >= 210 && pt < 260) SFc_error = 0.0204688;
-		else if (pt >= 260 && pt < 320) SFc_error = 0.0265191;
-		else if (pt >= 320 && pt < 400) SFc_error = 0.0313175;
-		else if (pt >= 400 && pt < 500) SFc_error = 0.0415417;
-		else if (pt >= 500 && pt < 600) SFc_error = 0.0740446;
-		else if (pt >= 600) SFc_error = 0.0596716;
+		if      (pt >= 30  && pt < 50)  SFc_error = 0.018076473847031593; 
+		else if (pt >= 50  && pt < 70)  SFc_error =0.024799736216664314; 
+		else if (pt >= 70  && pt < 100)  SFc_error = 0.024073265492916107;
+		else if (pt >= 100  && pt < 140)  SFc_error = 0.020040607079863548;
+		else if (pt >= 140  && pt < 200)  SFc_error = 0.016540588811039925;
+		else if (pt >= 200  && pt < 300)  SFc_error = 0.025977084413170815;
+		else if (pt >= 300  && pt < 670) SFc_error = 0.027120551094412804;
+		else if (pt >= 670) SFc_error = 2*0.027120551094412804;
+
 
 		float SFc_up = SFc + 2*SFc_error;
 		float SFc_down = SFc - 2*SFc_error;
@@ -398,12 +387,33 @@ void BTagModification(double randNumber, double pt, double eta, int jetFlavour, 
     // ---------------- For REAL Light-jets --------------- //
     else {
 
-        float SFlight=1.14022;
-        float SFlight_up=1.32022;
-        float SFlight_down=0.94022;
-        //float SFlight=0.907317;
-        //float SFlight_up=1.257317;
-        //float SFlight_down=0.557317;
+        float SFlight;
+        float SFlight_up;
+        float SFlight_down;
+
+//MWP 
+	if (abs(eta) < 0.8){ 
+		SFlight=((0.994351+(0.000250077*pt))+(9.24801e-07*(pt*pt)))+(-8.73293e-10*(pt*(pt*pt))); 	
+		SFlight_down=((0.949401+(-0.000356232*pt))+(2.24887e-06*(pt*pt)))+(-1.66011e-09*(pt*(pt*pt)));
+		SFlight_up=((1.03928+(0.000857422*pt))+(-4.02756e-07*(pt*pt)))+(-8.45836e-11*(pt*(pt*pt)));
+		}
+	else if (abs(eta) > 0.8 && abs(eta) < 1.6){
+		SFlight=((1.00939+(0.000461283*pt))+(-6.30306e-07*(pt*pt)))+(3.53075e-10*(pt*(pt*pt)));	
+		SFlight_down=((0.964857+(-2.19898e-05*pt))+(4.74117e-07*(pt*pt)))+(-3.36548e-10*(pt*(pt*pt)));
+		SFlight_up=((1.05392+(0.000944135*pt))+(-1.73386e-06*(pt*pt)))+(1.04242e-09*(pt*(pt*pt)));
+	}
+
+	else if (abs(eta) > 1.6 && abs(eta)< 2.4){ 
+		SFlight=((0.955798+(0.00146058*pt))+(-3.76689e-06*(pt*pt)))+(2.39196e-09*(pt*(pt*pt))); 	
+		SFlight_down=((0.910086+(0.00116371*pt))+(-3.02747e-06*(pt*pt)))+(1.86906e-09*(pt*(pt*pt)));
+		SFlight_up=((1.00151+(0.00175547*pt))+(-4.50251e-06*(pt*pt)))+(2.91473e-09*(pt*(pt*pt)));
+	}
+
+
+//TWP
+        //float SFlight=0.992339;
+        //float SFlight_up=1.17457;
+        //float SFlight_down=0.810103;
 
 	if (systDir == 0) SF_out = SFlight ;
 	else if(systDir > 0) SF_out = SFlight_up;

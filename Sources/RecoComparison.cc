@@ -34,7 +34,6 @@ using namespace std;
 
 
 template < int x, int y >
-//void addZbb(TH1D *(&hist)[x][y])
 void addZbb(TH1D *(&hist)[x][y], std::vector<TString> vhNames,std::vector<TString> vhNames_b, int current,TFile** fSamples)
 {
 
