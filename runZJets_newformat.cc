@@ -304,7 +304,6 @@ int main(int argc, char **argv)
 		      syst[iSyst], systDir[iSyst], Samples[iSample].xsecError,
 		      lepPtMin, lepEtaMax, jetPtMin, jetEtaMax,
 		      maxEvents, histoDir, bonzaiDir, maxFiles);
-	    cout << "  aaaa  " << hasGenInfo << endl;
 	    ana.Loop(hasRecoInfo, hasGenInfo, jobNum, nJobs, pdfSet, pdfMember, muR, muF, yieldScale);
 	    if(Samples[iSample].merge == '+') tomerge.push_back(ana.outputFileName.Data());
 	}//next sample, iSample      
