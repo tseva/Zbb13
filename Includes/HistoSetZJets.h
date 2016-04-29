@@ -259,6 +259,11 @@ class HistoSetZJets {
 	TH1D *FirstBJetPt_Zinc2Bjet;
 	TH1D *SecondBJetPt_Zinc2Bjet;
 	TH1D *ThirdBJetPt_Zinc3Bjet;
+        TH1D *BJetsMass_Zexc2Bjet;
+	TH1D *FirstBJetPt_Zexc1Bjet;
+	TH1D *FirstBJetPt_Zexc2Bjet;
+	TH1D *SecondBJetPt_Zexc2Bjet;
+	TH1D *ThirdBJetPt_Zexc3Bjet;
 	TH1D *CSV;
 	
 	TH1D *ZNGoodBJets_Zexc_l;
@@ -273,6 +278,11 @@ class HistoSetZJets {
 	TH1D *FirstBJetPt_Zinc2Bjet_l;
 	TH1D *SecondBJetPt_Zinc2Bjet_l;
 	TH1D *ThirdBJetPt_Zinc3Bjet_l;
+        TH1D *BJetsMass_Zexc2Bjet_l;
+	TH1D *FirstBJetPt_Zexc1Bjet_l;
+	TH1D *FirstBJetPt_Zexc2Bjet_l;
+	TH1D *SecondBJetPt_Zexc2Bjet_l;
+	TH1D *ThirdBJetPt_Zexc3Bjet_l;
 
 	TH1D *ZNGoodBJets_Zexc_c;
         TH1D *ZNGoodBJets_Zinc_c;
@@ -286,6 +296,11 @@ class HistoSetZJets {
 	TH1D *FirstBJetPt_Zinc2Bjet_c;
 	TH1D *SecondBJetPt_Zinc2Bjet_c;
 	TH1D *ThirdBJetPt_Zinc3Bjet_c;
+        TH1D *BJetsMass_Zexc2Bjet_c;
+	TH1D *FirstBJetPt_Zexc1Bjet_c;
+	TH1D *FirstBJetPt_Zexc2Bjet_c;
+	TH1D *SecondBJetPt_Zexc2Bjet_c;
+	TH1D *ThirdBJetPt_Zexc3Bjet_c;
 
 	TH1D *ZNGoodBJets_Zexc_b;
         TH1D *ZNGoodBJets_Zinc_b;
@@ -299,6 +314,13 @@ class HistoSetZJets {
 	TH1D *FirstBJetPt_Zinc2Bjet_b;
 	TH1D *SecondBJetPt_Zinc2Bjet_b;
 	TH1D *ThirdBJetPt_Zinc3Bjet_b;
+        TH1D *BJetsMass_Zexc2Bjet_b;
+	TH1D *FirstBJetPt_Zexc1Bjet_b;
+	TH1D *FirstBJetPt_Zexc2Bjet_b;
+	TH1D *SecondBJetPt_Zexc2Bjet_b;
+	TH1D *ThirdBJetPt_Zexc3Bjet_b;
+
+
 // end b histos
 
 // start b-jet GEN histos

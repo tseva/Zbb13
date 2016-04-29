@@ -633,6 +633,10 @@ HistoSetZJets::HistoSetZJets(TString leptonFlavor)
 	FirstBJetPt_Zinc1Bjet = newTH1D("FirstBJetPt_Zinc1B","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
 	FirstBJetPt_Zinc2Bjet = newTH1D("FirstBJetPt_Zinc2B","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 	SecondBJetPt_Zinc2Bjet = newTH1D("SecondBJetPt_Zinc2B","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	BJetsMass_Zexc2Bjet= newTH1D("BJetsMass_Zinc2", "b-jet mass inc 2 b-jet ","b jet mass",  20, 0, 200.);
+	FirstBJetPt_Zexc1Bjet = newTH1D("FirstBJetPt_Zinc1B","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
+	FirstBJetPt_Zexc2Bjet = newTH1D("FirstBJetPt_Zinc2B","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	SecondBJetPt_Zexc2Bjet = newTH1D("SecondBJetPt_Zinc2B","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 
 	ZNGoodBJets_Zexc_l = newTH1D("ZNGoodBJets_Zexc_l","B Jet Multiplicity (excl.) ", "N_{jets}", 5, -0.5, 4.5);
 	ZNGoodBJets_Zinc_l = newTH1D("ZNGoodBJets_Zinc_l","B Jet Multiplicity (incl.)", "N_{jets}", 5, -0.5, 4.5);
@@ -645,6 +649,10 @@ HistoSetZJets::HistoSetZJets(TString leptonFlavor)
 	FirstBJetPt_Zinc1Bjet_l = newTH1D("FirstBJetPt_Zinc1B_l","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
 	FirstBJetPt_Zinc2Bjet_l = newTH1D("FirstBJetPt_Zinc2B_l","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 	SecondBJetPt_Zinc2Bjet_l = newTH1D("SecondBJetPt_Zinc2B_l","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	BJetsMass_Zexc2Bjet_l= newTH1D("BJetsMass_Zexc2_l", "b-jet mass inc 2 b-jet ","b jet mass",  20, 0, 200.);
+	FirstBJetPt_Zexc1Bjet_l = newTH1D("FirstBJetPt_Zexc1B_l","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
+	FirstBJetPt_Zexc2Bjet_l = newTH1D("FirstBJetPt_Zexc2B_l","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	SecondBJetPt_Zexc2Bjet_l = newTH1D("SecondBJetPt_Zexc2B_l","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 	
 	ZNGoodBJets_Zexc_c = newTH1D("ZNGoodBJets_Zexc_c","B Jet Multiplicity (excl.)", "N_{jets}", 5, -0.5, 4.5);
 	ZNGoodBJets_Zinc_c = newTH1D("ZNGoodBJets_Zinc_c","B Jet Multiplicity (incl.)", "N_{jets}", 5, -0.5, 4.5);
@@ -657,6 +665,10 @@ HistoSetZJets::HistoSetZJets(TString leptonFlavor)
 	FirstBJetPt_Zinc1Bjet_c = newTH1D("FirstBJetPt_Zinc1B_c","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 20.);
 	FirstBJetPt_Zinc2Bjet_c = newTH1D("FirstBJetPt_Zinc2B_c","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 20.);
 	SecondBJetPt_Zinc2Bjet_c = newTH1D("SecondBJetPt_Zinc2B_c","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 20.);
+	BJetsMass_Zexc2Bjet_c= newTH1D("BJetsMass_Zexc2_c", "b-jet mass inc 2 b-jet ","b jet mass",  20, 0, 200.);
+	FirstBJetPt_Zexc1Bjet_c = newTH1D("FirstBJetPt_Zexc1B_c","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
+	FirstBJetPt_Zexc2Bjet_c = newTH1D("FirstBJetPt_Zexc2B_c","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	SecondBJetPt_Zexc2Bjet_c = newTH1D("SecondBJetPt_Zexc2B_c","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 	
 	ZNGoodBJets_Zexc_b = newTH1D("ZNGoodBJets_Zexc_b","B Jet Multiplicity (excl.)", "N_{jets}", 5, -0.5, 4.5);
 	ZNGoodBJets_Zinc_b = newTH1D("ZNGoodBJets_Zinc_b","B Jet Multiplicity (incl.)", "N_{jets}", 5, -0.5, 4.5);
@@ -669,6 +681,10 @@ HistoSetZJets::HistoSetZJets(TString leptonFlavor)
 	FirstBJetPt_Zinc1Bjet_b = newTH1D("FirstBJetPt_Zinc1B_b","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
 	FirstBJetPt_Zinc2Bjet_b = newTH1D("FirstBJetPt_Zinc2B_b","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 	SecondBJetPt_Zinc2Bjet_b = newTH1D("SecondBJetPt_Zinc2B_b","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	BJetsMass_Zexc2Bjet_b= newTH1D("BJetsMass_Zinc2_b", "b-jet mass inc 2 b-jet ","b jet mass",  20, 0, 200.);
+	FirstBJetPt_Zexc1Bjet_b = newTH1D("FirstBJetPt_Zinc1B_b","b-jet pt (inc 1 b jet)","b-jet pt", 20, 0, 200.);
+	FirstBJetPt_Zexc2Bjet_b = newTH1D("FirstBJetPt_Zinc2B_b","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
+	SecondBJetPt_Zexc2Bjet_b = newTH1D("SecondBJetPt_Zinc2B_b","b-jet pt (inc 2 b jet)","b-jet pt", 20, 0, 200.);
 	CSV = newTH1D("CSV","CSV","CSV", 20, 0, 1.);
 
 	METE_Zinc1Bjet = newTH1D("MET_Zinc1Bjet","MET E distribution in inc1 B-jet","MET", 23, 0.,230.);

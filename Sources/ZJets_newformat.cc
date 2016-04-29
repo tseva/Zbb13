@@ -279,7 +279,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 	}
 
 	if(nEvents == 0 && !EvtIsRealData){
-	    xsec_=1.;
+	    //xsec_=1.;
 	    norm_ = yieldScale * lumi_ * xsec_ * xsecFactor_ * skimAccep_[0];
 	    if(norm_ == 0){
 		std::cerr << "Error: normaliation factor for sample " << fileName
@@ -2451,7 +2451,95 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		else ZptBJets_Zinc3Bjet_l->Fill(EWKBoson.Pt(), weight);
 		}
 
+//exclusive
 
+	if (nGoodBJets==1){
+		//METE_Zexc1Bjet->Fill(MET.E(),weight);
+		//METPt_Zexc1Bjet->Fill(MET.Pt(),weight);
+		ZptBJets_Zexc1Bjet->Fill(EWKBoson.Pt(),weight);
+		for (auto &jet:jets){
+			if (jet.isBJet){
+				FirstBJetPt_Zexc1Bjet->Fill(jet.v.Pt(),weight);
+				break;
+			}
+		}
+		if (evFlav==0){
+			ZptBJets_Zexc1Bjet_l->Fill(EWKBoson.Pt(),weight);
+			for (auto &jet:jets){
+				if (jet.isBJet){
+					FirstBJetPt_Zexc1Bjet_l->Fill(jet.v.Pt(),weight);
+					break;
+				}
+			}
+		}
+		if (evFlav==4){
+			ZptBJets_Zexc1Bjet_c->Fill(EWKBoson.Pt(),weight);
+			for (auto &jet:jets){
+				if (jet.isBJet){
+					FirstBJetPt_Zexc1Bjet_c->Fill(jet.v.Pt(),weight);
+					break;
+				}
+			}
+		}
+		if (evFlav==5){
+			ZptBJets_Zexc1Bjet_b->Fill(EWKBoson.Pt(),weight);
+			for (auto &jet:jets){
+				if (jet.isBJet){
+					FirstBJetPt_Zexc1Bjet_b->Fill(jet.v.Pt(),weight);
+					break;
+				}
+			}
+		}
+
+	}
+
+
+	if (nGoodBJets==2){
+		//METE_Zexc2Bjet->Fill(MET.E(),weight);
+		//METPt_Zexc2Bjet->Fill(MET.Pt(),weight);
+		ZptBJets_Zexc2Bjet->Fill(EWKBoson.Pt(),weight);
+		if (evFlav==5) ZptBJets_Zexc2Bjet_b->Fill(EWKBoson.Pt(),weight);
+		else if (evFlav==4) ZptBJets_Zexc2Bjet_c->Fill(EWKBoson.Pt(),weight);
+		else ZptBJets_Zexc2Bjet_l->Fill(EWKBoson.Pt(),weight);
+
+		int cnt=0;
+		TLorentzVector Jet1;
+		TLorentzVector Jet2;
+		for (auto &jet:jets){
+			if (jet.isBJet && cnt==0){
+				FirstBJetPt_Zexc2Bjet->Fill(jet.v.Pt(), weight);
+				if (evFlav==5) FirstBJetPt_Zexc2Bjet_b->Fill(jet.v.Pt(), weight);
+				else if (evFlav==4) FirstBJetPt_Zexc2Bjet_c->Fill(jet.v.Pt(), weight);
+				else FirstBJetPt_Zexc2Bjet_l->Fill(jet.v.Pt(), weight);
+				
+				Jet1 = jet.v;
+				cnt++;
+			}
+			else if (jet.isBJet && cnt==1){
+				SecondBJetPt_Zexc2Bjet->Fill(jet.v.Pt(), weight);
+				if (evFlav==5) SecondBJetPt_Zexc2Bjet_b->Fill(jet.v.Pt(), weight);
+				else if (evFlav==4) SecondBJetPt_Zexc2Bjet_c->Fill(jet.v.Pt(), weight);
+				else SecondBJetPt_Zexc2Bjet_l->Fill(jet.v.Pt(), weight);
+				Jet2 = jet.v;
+				break;
+			}
+		}
+		BJetsMass_Zexc2Bjet->Fill((Jet1+Jet2).M(), weight);
+		if (evFlav==5) BJetsMass_Zexc2Bjet_b->Fill((Jet1+Jet2).M(), weight);
+		else if (evFlav==4) BJetsMass_Zexc2Bjet_c->Fill((Jet1+Jet2).M(), weight);
+		else BJetsMass_Zexc2Bjet_l->Fill((Jet1+Jet2).M(), weight);
+		
+	}
+
+	/*if (nGoodBJets==3){
+		METE_Zexc3Bjet->Fill(MET.E(),weight);
+		METPt_Zexc3Bjet->Fill(MET.Pt(),weight);
+		ZptBJets_Zexc3Bjet->Fill(EWKBoson.Pt(),weight);
+		if (evFlav==5) ZptBJets_Zexc3Bjet_b->Fill(EWKBoson.Pt(), weight);
+		else if (evFlav==4) ZptBJets_Zexc3Bjet_c->Fill(EWKBoson.Pt(), weight);
+		else ZptBJets_Zexc3Bjet_l->Fill(EWKBoson.Pt(), weight);
+		}
+*/
         }
 
 
