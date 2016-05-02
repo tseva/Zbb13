@@ -265,6 +265,8 @@ class HistoSetZJets {
 	TH1D *SecondBJetPt_Zexc2Bjet;
 	TH1D *ThirdBJetPt_Zexc3Bjet;
 	TH1D *CSV;
+	TH1D *bJetCSV;
+	TH1D *allJetCSV;
 	
 	TH1D *ZNGoodBJets_Zexc_l;
         TH1D *ZNGoodBJets_Zinc_l;
@@ -383,7 +385,11 @@ class HistoSetZJets {
         TH1D *mindRofJetToZ_Zpt100le200_Zexc1jet;
         TH1D *mindRofJetToZ_Zpt200le400_Zexc1jet;
    	TH1D *mindRofJetToZ_Zptgt400_Zexc1jet;
- 
+        
+	TH1D *mindRofJetToZ_JetPtle100_Zexc1jet;
+        TH1D *mindRofJetToZ_JetPt100le200_Zexc1jet;
+        TH1D *mindRofJetToZ_JetPt200le400_Zexc1jet;
+        TH1D *mindRofJetToZ_JetPtgt400_Zexc1jet;
                                                                                                
  
 	// INC 1 JET CASE
@@ -406,7 +412,12 @@ class HistoSetZJets {
 	 TH1D *mindRofJetToZ_Zpt100le200_Zinc1jet;
 	 TH1D *mindRofJetToZ_Zpt200le400_Zinc1jet;
 	 TH1D *mindRofJetToZ_Zptgt400_Zinc1jet;
-	 
+	
+	TH1D *mindRofJetToZ_JetPtle100_Zinc1jet;
+        TH1D *mindRofJetToZ_JetPt100le200_Zinc1jet;
+        TH1D *mindRofJetToZ_JetPt200le400_Zinc1jet;
+        TH1D *mindRofJetToZ_JetPtgt400_Zinc1jet;
+ 
 	// INC 2 JETS CASE
 	TH1D *RatioLeadingJetPtToZpt_Zinc2jet;
 	TH1D *RatioLeadingJetPtToZptle100_Zinc2jet;
@@ -425,6 +436,11 @@ class HistoSetZJets {
         TH1D *mindRofJetToZ_Zpt100le200_Zinc2jet;
         TH1D *mindRofJetToZ_Zpt200le400_Zinc2jet;
 	TH1D *mindRofJetToZ_Zptgt400_Zinc2jet;
+	
+	TH1D *mindRofJetToZ_JetPtle100_Zinc2jet;
+        TH1D *mindRofJetToZ_JetPt100le200_Zinc2jet;
+        TH1D *mindRofJetToZ_JetPt200le400_Zinc2jet;
+        TH1D *mindRofJetToZ_JetPtgt400_Zinc2jet;
 
 
 	// gen info
