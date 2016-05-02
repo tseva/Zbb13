@@ -70,7 +70,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
     //    int ZMCutLow(71), ZMCutHigh(111);
     double ZMCutLow = cfg.getD("ZMassMin", 71.);
     double ZMCutHigh = cfg.getD("ZMassMax", 111.);
-    double b_tag_cut(0.800);
+    double b_tag_cut(0.89);
     int evFlav(0);
     int MTCutLow(50), METCutLow(0);
     // additional variables
@@ -277,12 +277,12 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 	    std::cerr << "Failed to read Tree entry " << jentry << "!\n";
 	    continue;
 	}
-
+	cout << " MAJKE MU " << yieldScale <<"  LUMI " << lumi_ << " xsec "<< xsec_ << " xsecFactor_ " << xsecFactor_<<"  skimAccep_[0] " << skimAccep_[0] << endl;
 	if(nEvents == 0 && !EvtIsRealData){
-	    //xsec_=1.;
+	    xsec_ = 1. ;
 	    norm_ = yieldScale * lumi_ * xsec_ * xsecFactor_ * skimAccep_[0];
 	    if(norm_ == 0){
-		std::cerr << "Error: normaliation factor for sample " << fileName
+		std::cerr << "Error: normalization factor for sample " << fileName
 			  << " is null! Abort." << std::endl;
 		abort();
 	    }
@@ -549,9 +549,9 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
         int countTauS3 = 0;
 
 
-	//hasGenInfo=0;
+	hasGenInfo=0;
 
-
+	if ( DEBUG )cout << " hasGenInfo " << hasGenInfo <<" hasRecoInfo  " << hasRecoInfo <<  endl;
         if (hasGenInfo) {
             // CommentAG: this line is commented because can't do countTauS3-- since status 3 is not stored
             // if (hasRecoInfo) countTauS3 = (lepSel == "DMu" || lepSel == "DE") ? 2 : 1; // AG
@@ -750,7 +750,11 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 				bool passesBJets = false;
 				if ( DEBUG ) cout << " bbefore " << passesBJets << " n jets tot "<< nTotJets <<"    " << JetAk04BDiscCisvV2->at(i)<< endl;
 				//if (fileName.Index("Sherpa") < 0) passesBJetsscCisvV2 
-				if ( JetAk04BDiscCisvV2->at(i) >= b_tag_cut )  passesBJets = 1;
+				allJetCSV->Fill(JetAk04BDiscCisvV2->at(i),weight);
+				if ( JetAk04BDiscCisvV2->at(i) >= b_tag_cut )  { 
+						passesBJets = 1;
+						bJetCSV->Fill(JetAk04BDiscCisvV2->at(i),weight);
+					}
 				///cout << "An ass  "  << JetAk04BDiscCisvV2->at(i) << "    " << passesBJets << "    " << nTotJets << endl;
 				if ( passesBJets ) { nEffEventsVInc1BJets += weight; // weight; //	if (JetAk04BTagCsvSLV1->at(i) > 0 ) cout << "bjets " << JetAk04BTagCsvSLV1->at(i) << endl; 
 					if ( DEBUG ) cout << jentry<< "  ev weight"<< weight << "  Pt "<< JetAk04Pt->at(i)<<" bjet   " << JetAk04BDiscCisvV2->at(i) << " Count  " <<nEffEventsVInc1BJets << " pases b jet cut "<< passesBJets <<"  reco n jets" << nTotJets << endl;
@@ -817,10 +821,22 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		} //End of loop over all the jets
 
 		//Get Event Flavour - FIXME!!! in 76X
-	
-
+		for (int b=0; b<nTotJets; b++){
+			if (abs(JetAk04PartFlav->at(b)) == 5){
+				evFlav=5;
+				break;
+				}
+			else if (abs(JetAk04PartFlav->at(b)) == 4){
+				evFlav=4;
+				}
+			}
  
 		nGoodJets = jets.size();
+		if (!EvtIsRealData)  weight *=weightJetEventProducer(jets,b_tag_cut);
+		//int nGoodBJets = 0 ;
+		for (unsigned short i(0); i < nGoodJets; i++) {
+			if ( jets[i].isBJet> b_tag_cut ) nGoodBJets++;
+		}
 		if (DEBUG){
 			if ( nGoodBJets > 0 ) {cout << " aaaa3 " << nTotJets << " Njets pt>30:  " << counJets30<<  " b jets "<< counBJets << " N Jets  " << nGoodJets << " N Bjets" << nGoodBJets << endl;
 			}		
@@ -886,11 +902,15 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 	vector<TLorentzVector> genLVJets;
 	vector<jetStruct> genJets_20;
 	TLorentzVector genJet1Plus2, genJet1Minus2;
-
+	if ( DEBUG ) cout << " jets before gen info " << endl;
 	if (hasGenInfo){
 		nTotGenJets = GJetAk04Eta->size();
+	if ( DEBUG ) cout << " jets in gen info " << nTotGenJets <<  endl;
 		//-- retrieving generated jets
 		for (unsigned short i(0); i < nTotGenJets; i++){
+	if ( DEBUG ) cout << " jets in gen info " << nTotGenJets <<  endl;
+	//cout << GJetAk04MatchedPartonDR->at(i) << "  " << GJetAk04MatchedPartonID->at(i)<< endl;
+	//cout << " a a a  " << GJetAk04MatchedPartonID->at(i)<< endl;
 			jetStruct genJet(GJetAk04Pt->at(i), GJetAk04Eta->at(i), GJetAk04Phi->at(i), GJetAk04E->at(i), i, 0, 0, 0);
 			bool genJetPassesdRCut(1);
 			for (unsigned short j(0); j < ngenLeptons; j++){ 
@@ -903,18 +923,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 			}
 		}
 		nGoodGenJets = genJets.size();
-		//for (auto gJet:GJetAk04MatchedPartonID)
-		for (int b=0; b<nTotGenJets; b++){
-			if (abs(GJetAk04MatchedPartonID->at(0)) == 5){
-				evFlav=5;
-				break;
-				}
-			else if (abs(GJetAk04MatchedPartonID->at(b)) == 4){
-				evFlav=4;
-				}
-			}
 	}
-	hasGenInfo=0;
 	//=======================================================================================================//
 
 
@@ -1648,7 +1657,8 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		if(EWKBoson.Pt().le.100.) mindRofJetToZ_Zptle100_Zinc1jet->Fill(dRZJetMin,weight);
 		if(EWKBoson.Pt().le.100.) mindRofJetToZ_Zptle100_Zinc1jet->Fill(dRZJetMin,weight);
 		if(EWKBoson.Pt().le.100.) mindRofJetToZ_Zptle100_Zinc1jet->Fill(dRZJetMin,weight);
-*/  
+*/ 
+	      cout <<" WWWW "<< weight << endl; 
               if ( EWKBoson.Pt()> 0 && EWKBoson.Pt() <= 100.) {
 		    mindRofJetToZ_Zptle100_Zinc1jet->Fill(dRZJetMin,weight);
                     RatioLeadingJetPtToZptle100_Zinc1jet->Fill(fabs(jets[0].v.Pt()/EWKBoson.Pt()),weight );
@@ -1915,7 +1925,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		}
 // SEVA2 END            
 
-
+		if ( DEBUG ) cout <<__LINE__ << endl;
                 nEventsVInc2Jets++;
                 nEffEventsVInc2Jets += weight;
                 //////////////////Special Branch////////////////////////
@@ -2224,9 +2234,11 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
                     }
                 }
             }
+		 if ( DEBUG ) cout <<__LINE__ << endl;
 
 // END 2 JETS CASE
             if (nGoodJets_20 >= 3) ThirdJetPt_Zinc3jet->Fill(jets_20[2].v.Pt(), weight);
+		 if ( DEBUG ) cout <<__LINE__ << endl;
 
 /// MINIMUM 3 JETS CASE
             if (nGoodJets >= 3) {
@@ -2286,6 +2298,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
                 }
             }
 
+		if ( DEBUG ) cout <<__LINE__ << endl;
 /// MINIMUM 4 JETS CASE
 
             if (nGoodJets_20 >= 4) FourthJetPt_Zinc4jet->Fill(jets_20[3].v.Pt(), weight);
@@ -2307,6 +2320,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
                 }
             }    
 
+		if ( DEBUG ) cout <<__LINE__ << endl;
 /// MINIMUM 5 JETS CASE
             if (nGoodJets_20 >= 5) FifthJetPt_Zinc5jet->Fill(jets_20[4].v.Pt(), weight);
             if (nGoodJets >= 5){
@@ -2326,6 +2340,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
                     ZNGoodJets_Zexc_NoWeight->Fill(5.);
                 }
             }    
+		if ( DEBUG ) cout <<__LINE__ << endl;
 
 /// MINIMUM 6 JETS CASE
             if (nGoodJets_20 >= 6) SixthJetPt_Zinc6jet->Fill(jets_20[5].v.Pt(), weight);
@@ -2359,15 +2374,19 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 
             //=======================================================================================================//
 //BJets JL
-
+	if ( DEBUG ) cout <<__LINE__ << endl;
         ZNGoodBJets_Zexc->Fill(nGoodBJets, weight);
+	if ( DEBUG ) cout <<__LINE__ << endl;
         ZNGoodBJets_Zexc_b->Fill(nGoodBJets_b, weight);
+	if ( DEBUG ) cout <<__LINE__ << endl;
         ZNGoodBJets_Zexc_c->Fill(nGoodBJets_c, weight);
+	if ( DEBUG ) cout <<__LINE__ << endl;
         ZNGoodBJets_Zexc_l->Fill(nGoodBJets_l, weight);
+	if ( DEBUG ) cout <<__LINE__ << endl;
         ZNGoodBJetsNVtx_Zexc->Fill(nGoodBJets, EvtVtxCnt, weight);
+	if ( DEBUG ) cout <<__LINE__ << endl;
 	if (jets.size()>0) CSV->Fill(jets[0].BDiscCisvV2,weight);
-	
-
+	if ( DEBUG ) cout <<__LINE__ << nGoodBJets << endl;
 	if (nGoodBJets>=1){
 		METE_Zinc1Bjet->Fill(MET.E(),weight);
 		METPt_Zinc1Bjet->Fill(MET.Pt(),weight);
@@ -2378,6 +2397,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 				break;
 			}
 		}
+		if ( DEBUG ) cout <<__LINE__ << evFlav << endl;
 		if (evFlav==0){
 			ZptBJets_Zinc1Bjet_l->Fill(EWKBoson.Pt(),weight);
 			for (auto &jet:jets){
@@ -2387,6 +2407,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 				}
 			}
 		}
+		if ( DEBUG ) cout <<__LINE__ << endl;
 		if (evFlav==4){
 			ZptBJets_Zinc1Bjet_c->Fill(EWKBoson.Pt(),weight);
 			for (auto &jet:jets){
@@ -2407,7 +2428,6 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		}
 
 	}
-
 
 	if (nGoodBJets>=2){
 		METE_Zinc2Bjet->Fill(MET.E(),weight);
@@ -2455,95 +2475,7 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		else ZptBJets_Zinc3Bjet_l->Fill(EWKBoson.Pt(), weight);
 		}
 
-//exclusive
 
-	if (nGoodBJets==1){
-		//METE_Zexc1Bjet->Fill(MET.E(),weight);
-		//METPt_Zexc1Bjet->Fill(MET.Pt(),weight);
-		ZptBJets_Zexc1Bjet->Fill(EWKBoson.Pt(),weight);
-		for (auto &jet:jets){
-			if (jet.isBJet){
-				FirstBJetPt_Zexc1Bjet->Fill(jet.v.Pt(),weight);
-				break;
-			}
-		}
-		if (evFlav==0){
-			ZptBJets_Zexc1Bjet_l->Fill(EWKBoson.Pt(),weight);
-			for (auto &jet:jets){
-				if (jet.isBJet){
-					FirstBJetPt_Zexc1Bjet_l->Fill(jet.v.Pt(),weight);
-					break;
-				}
-			}
-		}
-		if (evFlav==4){
-			ZptBJets_Zexc1Bjet_c->Fill(EWKBoson.Pt(),weight);
-			for (auto &jet:jets){
-				if (jet.isBJet){
-					FirstBJetPt_Zexc1Bjet_c->Fill(jet.v.Pt(),weight);
-					break;
-				}
-			}
-		}
-		if (evFlav==5){
-			ZptBJets_Zexc1Bjet_b->Fill(EWKBoson.Pt(),weight);
-			for (auto &jet:jets){
-				if (jet.isBJet){
-					FirstBJetPt_Zexc1Bjet_b->Fill(jet.v.Pt(),weight);
-					break;
-				}
-			}
-		}
-
-	}
-
-
-	if (nGoodBJets==2){
-		//METE_Zexc2Bjet->Fill(MET.E(),weight);
-		//METPt_Zexc2Bjet->Fill(MET.Pt(),weight);
-		ZptBJets_Zexc2Bjet->Fill(EWKBoson.Pt(),weight);
-		if (evFlav==5) ZptBJets_Zexc2Bjet_b->Fill(EWKBoson.Pt(),weight);
-		else if (evFlav==4) ZptBJets_Zexc2Bjet_c->Fill(EWKBoson.Pt(),weight);
-		else ZptBJets_Zexc2Bjet_l->Fill(EWKBoson.Pt(),weight);
-
-		int cnt=0;
-		TLorentzVector Jet1;
-		TLorentzVector Jet2;
-		for (auto &jet:jets){
-			if (jet.isBJet && cnt==0){
-				FirstBJetPt_Zexc2Bjet->Fill(jet.v.Pt(), weight);
-				if (evFlav==5) FirstBJetPt_Zexc2Bjet_b->Fill(jet.v.Pt(), weight);
-				else if (evFlav==4) FirstBJetPt_Zexc2Bjet_c->Fill(jet.v.Pt(), weight);
-				else FirstBJetPt_Zexc2Bjet_l->Fill(jet.v.Pt(), weight);
-				
-				Jet1 = jet.v;
-				cnt++;
-			}
-			else if (jet.isBJet && cnt==1){
-				SecondBJetPt_Zexc2Bjet->Fill(jet.v.Pt(), weight);
-				if (evFlav==5) SecondBJetPt_Zexc2Bjet_b->Fill(jet.v.Pt(), weight);
-				else if (evFlav==4) SecondBJetPt_Zexc2Bjet_c->Fill(jet.v.Pt(), weight);
-				else SecondBJetPt_Zexc2Bjet_l->Fill(jet.v.Pt(), weight);
-				Jet2 = jet.v;
-				break;
-			}
-		}
-		BJetsMass_Zexc2Bjet->Fill((Jet1+Jet2).M(), weight);
-		if (evFlav==5) BJetsMass_Zexc2Bjet_b->Fill((Jet1+Jet2).M(), weight);
-		else if (evFlav==4) BJetsMass_Zexc2Bjet_c->Fill((Jet1+Jet2).M(), weight);
-		else BJetsMass_Zexc2Bjet_l->Fill((Jet1+Jet2).M(), weight);
-		
-	}
-
-	/*if (nGoodBJets==3){
-		METE_Zexc3Bjet->Fill(MET.E(),weight);
-		METPt_Zexc3Bjet->Fill(MET.Pt(),weight);
-		ZptBJets_Zexc3Bjet->Fill(EWKBoson.Pt(),weight);
-		if (evFlav==5) ZptBJets_Zexc3Bjet_b->Fill(EWKBoson.Pt(), weight);
-		else if (evFlav==4) ZptBJets_Zexc3Bjet_c->Fill(EWKBoson.Pt(), weight);
-		else ZptBJets_Zexc3Bjet_l->Fill(EWKBoson.Pt(), weight);
-		}
-*/
         }
 
 
@@ -3583,8 +3515,6 @@ void ZJets::Init(bool hasRecoInfo, bool hasGenInfo){
     GJetAk04Eta = 0;
     GJetAk04Phi = 0;
     GJetAk04E = 0;
-    GJetAk04MatchedPartonID = 0;
-
 
     ElPt = 0;
     ElEta = 0;
@@ -3705,7 +3635,6 @@ void ZJets::Init(bool hasRecoInfo, bool hasGenInfo){
         fChain->SetBranchAddress("GJetAk04Eta", &GJetAk04Eta, &b_GJetAk04Eta);
         fChain->SetBranchAddress("GJetAk04Phi", &GJetAk04Phi, &b_GJetAk04Phi);
         fChain->SetBranchAddress("GJetAk04E", &GJetAk04E, &b_GJetAk04E);
-        fChain->SetBranchAddress("GJetAk04MatchedPartonID", &GJetAk04MatchedPartonID, &b_GJetAk04MatchedPartonID);
         fChain->SetBranchAddress("GLepClosePhotPt", &GLepClosePhotPt, &b_GLepClosePhotPt);
         fChain->SetBranchAddress("GLepClosePhotEta", &GLepClosePhotEta, &b_GLepClosePhotEta);
         fChain->SetBranchAddress("GLepClosePhotPhi", &GLepClosePhotPhi, &b_GLepClosePhotPhi);
