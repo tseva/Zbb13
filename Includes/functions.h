@@ -14,13 +14,14 @@ void barre_de_progression(int);
 struct leptonStruct{
 
     leptonStruct();
-    leptonStruct(double pt_, double eta_, double phi_, double en_, double charge_, double id_, double iso_, double scEta_, double trigger_) {
+    leptonStruct(double pt_, double eta_, double phi_, double en_, double charge_, double id_, double iso_, double scEta_, double trigger_, int lepID_) {
         v.SetPtEtaPhiE(pt_, eta_, phi_, en_);
         charge = charge_;
         id = id_;
         iso = iso_;
         scEta = scEta_;
         trigger = trigger_;
+        lepID = lepID_;
     }
 
     TLorentzVector v;
