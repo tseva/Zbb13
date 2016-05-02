@@ -2500,17 +2500,17 @@ void ZJets::Loop(bool hasRecoInfo, bool hasGenInfo, int jobNum, int nJobs,
 		ZptBJets_Zinc2Bjet->Fill(EWKBoson.Pt(),weightBJets);
 		if (evFlav==5) ZptBJets_Zinc2Bjet_b->Fill(EWKBoson.Pt(),weightBJets);
 		else if (evFlav==4) ZptBJets_Zinc2Bjet_c->Fill(EWKBoson.Pt(),weightBJets);
-		else ZptBJets_Zinc2Bjet_l->Fill(EWKBoson.Pt(),weight);
+		else ZptBJets_Zinc2Bjet_l->Fill(EWKBoson.Pt(),weightBJets);
 
 		int cnt=0;
 		TLorentzVector Jet1;
 		TLorentzVector Jet2;
 		for (auto &jet:jets){
 			if (jet.isBJet && cnt==0){
-				FirstBJetPt_Zinc2Bjet->Fill(jet.v.Pt(), weight);
-				if (evFlav==5) FirstBJetPt_Zinc2Bjet_b->Fill(jet.v.Pt(), weight);
-				else if (evFlav==4) FirstBJetPt_Zinc2Bjet_c->Fill(jet.v.Pt(), weight);
-				else FirstBJetPt_Zinc2Bjet_l->Fill(jet.v.Pt(), weight);
+				FirstBJetPt_Zinc2Bjet->Fill(jet.v.Pt(), weightBJets);
+				if (evFlav==5) FirstBJetPt_Zinc2Bjet_b->Fill(jet.v.Pt(), weightBJets);
+				else if (evFlav==4) FirstBJetPt_Zinc2Bjet_c->Fill(jet.v.Pt(), weightBJets);
+				else FirstBJetPt_Zinc2Bjet_l->Fill(jet.v.Pt(), weightBJets);
 				
 				Jet1 = jet.v;
 				cnt++;
